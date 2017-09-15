@@ -47,7 +47,7 @@
                     ardo = new SerialPort();
                     ardo.PortName = "COM3";
                     ardo.BaudRate = 9600;
-                    ardo.Open();
+                        ardo.Open();
                     string x = ardo.ReadLine();
                      
 
@@ -65,20 +65,18 @@
                     <a href="javascript:parar();" id="parar">Parar</a>
                     <a href="javascript:inicio();" id="continuar">Continuar</a>
                     <a href="javascript:reinicio();" id="reinicio">Reiniciar</a>
-                    <input id="inputDatabaseName" type="text" value="@x"/>
+                    <input type="hidden" id="inputDatabaseName" value="@x"/>
                     
                 </div>
                 @Scripts.Render("~/bundles/jquery")
                 <script type="text/javascript">
-
-                    $('#inputDatabaseName').on('input', function (e) {
-                        
-                        if($('#inputDatabaseName').val()=="I")
+                    $(document).ready(function () {
+                        if ($('#inputDatabaseName').val() == "I")
                             inicio();
                         else if ($('#inputDatabaseName').val() == "F")
                             parar();
-                        
                     });
+                  
                     var centesimas = 0;
                     var segundos = 0;
                     var minutos = 0;
