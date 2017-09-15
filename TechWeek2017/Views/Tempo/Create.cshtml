@@ -1,8 +1,10 @@
 ﻿@model TechWeek2017.Models.Tempo
+   @using System.IO.Ports
 
 @{
     ViewBag.Title = "Create";
-}
+
+    }
 
 <h2>Create</h2>
 
@@ -39,14 +41,112 @@
         </div>
         <div class="form-group">
             @Html.LabelFor(model => model.Time, htmlAttributes: new { @class = "control-label col-md-2" })
+            
             <div class="col-md-10">
-                @{  System.IO.Ports.SerialPort ardo = new System.IO.Ports.SerialPort();
-                    //ardo.PortName = "COM5";
-                    //ardo.BaudRate = 9600;
-                    //ardo.Open();
-                    //string x =ardo.ReadLine().ToString();
+                @{ SerialPort ardo;
+                    ardo = new SerialPort();
+                    ardo.PortName = "COM3";
+                    ardo.BaudRate = 9600;
+                    ardo.Open();
+                    string x = ardo.ReadLine();
+                     
+
+                 }
+                
+
+
+                <div id="contenedor">
+                   
+                    <div class="reloj" id="Horas">00</div>
+                    <div class="reloj" id="Minutos">:00</div>
+                    <div class="reloj" id="Segundos">:00</div>
+                    <div class="reloj" id="Centesimas">:00</div>
+                    <a href="javascript:inicio();" id="inicio">Start</a>
+                    <a href="javascript:parar();" id="parar">Parar</a>
+                    <a href="javascript:inicio();" id="continuar">Continuar</a>
+                    <a href="javascript:reinicio();" id="reinicio">Reiniciar</a>
+                    <input id="inputDatabaseName" type="text" value="@x"/>
+                    
+                </div>
+                @Scripts.Render("~/bundles/jquery")
+                <script type="text/javascript">
+
+                    $('#inputDatabaseName').on('input', function (e) {
+                        
+                        if($('#inputDatabaseName').val()=="I")
+                            inicio();
+                        else if ($('#inputDatabaseName').val() == "F")
+                            parar();
+                        
+                    });
+                    var centesimas = 0;
+                    var segundos = 0;
+                    var minutos = 0;
+                    var horas = 0;
+                    function inicio() {
+                        control = setInterval(cronometro, 10);
+                        document.getElementById("inicio").disabled = true;
+                        document.getElementById("parar").disabled = false;
+                        document.getElementById("continuar").disabled = true;
+                        document.getElementById("reinicio").disabled = false;
                     }
-                <label name="time"></label>
+                    function parar() {
+                        clearInterval(control);
+                        document.getElementById("parar").disabled = true;
+                        document.getElementById("continuar").disabled = false;
+                    }
+                    function reinicio() {
+                        clearInterval(control);
+                        centesimas = 0;
+                        segundos = 0;
+                        minutos = 0;
+                        horas = 0;
+                        Centesimas.innerHTML = ":00";
+                        Segundos.innerHTML = ":00";
+                        Minutos.innerHTML = ":00";
+                        Horas.innerHTML = "00";
+                        document.getElementById("inicio").disabled = false;
+                        document.getElementById("parar").disabled = true;
+                        document.getElementById("continuar").disabled = true;
+                        document.getElementById("reinicio").disabled = true;
+                    }
+                    function cronometro() {
+                        var time = "";
+                        if (centesimas < 99) {
+                            centesimas++;
+                            if (centesimas < 10) { centesimas = "0" + centesimas }
+                            Centesimas.innerHTML = ":" + centesimas;
+                        }
+                        if (centesimas == 99) {
+                            centesimas = -1;
+                        }
+                        if (centesimas == 0) {
+                            segundos++;
+                            if (segundos < 10) { segundos = "0" + segundos }
+                            Segundos.innerHTML = ":" + segundos;
+                        }
+                        if (segundos == 59) {
+                            segundos = -1;
+                        }
+                        if ((centesimas == 0) && (segundos == 0)) {
+                            minutos++;
+                            if (minutos < 10) { minutos = "0" + minutos }
+                            Minutos.innerHTML = ":" + minutos;
+                        }
+                        if (minutos == 59) {
+                            minutos = -1;
+                        }
+                        if ((centesimas == 0) && (segundos == 0) && (minutos == 0)) {
+                            horas++;
+                            if (horas < 10) { horas = "0" + horas }
+                            Horas.innerHTML = horas;
+
+                        }
+                        $('#tempo1').val(Horas.innerText + Minutos.innerText + Segundos.innerText + Centesimas.innerText);
+                    }
+                </script>
+                <input type="text" name="tempo1" id="tempo1" />
+                
             </div>
         </div>
         <div class="form-group">
