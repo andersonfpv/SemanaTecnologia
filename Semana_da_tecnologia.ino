@@ -73,8 +73,8 @@ int x = Serial.read();
   
   cmMsec = ultrasonic.convert(microsec, Ultrasonic::CM);
   inMsec = ultrasonic.convert(microsec, Ultrasonic::IN);
-  cmMsec2 = ultrasonic2.convert(microsec, Ultrasonic::CM);
-  inMsec2 = ultrasonic2.convert(microsec, Ultrasonic::IN);
+  cmMsec2 = ultrasonic2.convert(microsec2, Ultrasonic::CM);
+  inMsec2 = ultrasonic2.convert(microsec2, Ultrasonic::IN);
   //int x = 0;
    if  ( ( cmMsec > 6.0) )
    {  // Se bot�o acionado e cron�metro desligado,
